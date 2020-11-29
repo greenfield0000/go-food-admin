@@ -2,9 +2,8 @@ package dish
 
 import (
 	"github.com/gofrs/uuid"
-	"github.com/greenfield0000/go-food/back/database"
-	"github.com/greenfield0000/go-food/back/model"
-
+	"github.com/greenfield0000/go-food/microservices/go-food-admin/database"
+	"github.com/greenfield0000/go-food/microservices/go-food-admin/model"
 	"time"
 )
 

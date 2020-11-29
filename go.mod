@@ -1,4 +1,4 @@
-module github.com/greenfield0000/go-food/back
+module github.com/greenfield0000/go-food/microservices/go-food-admin
 
 go 1.14
 

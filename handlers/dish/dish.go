@@ -2,8 +2,8 @@ package dish
 
 import (
 	"encoding/json"
-	"github.com/greenfield0000/go-food/back/model"
-	"github.com/greenfield0000/go-food/back/repository/dish"
+	"github.com/greenfield0000/go-food/microservices/go-food-admin/model"
+	"github.com/greenfield0000/go-food/microservices/go-food-admin/repository/dish"
 	"io/ioutil"
 	"log"
 	"net/http"
