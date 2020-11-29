@@ -1,4 +1,4 @@
-package dish
+package handlers
 
 import (
 	"encoding/json"
