@@ -30,8 +30,8 @@ func main() {
 	// dish
 	http.HandleFunc("/dish/create", middleware(dish.CreateHandler))
 	http.HandleFunc("/dish/all", middleware(dish.AllHandler))
-	//http.HandleFunc("/dish/update", middleware())
-	//http.HandleFunc("/dish/delete", middleware())
+	http.HandleFunc("/dish/update", middleware(dish.UpdateHandler))
+	http.HandleFunc("/dish/delete", middleware(dish.DeleteHandler))
 	// ingridient
 	//http.HandleFunc("/ingridient", middleware())
 	//http.HandleFunc("/ingridient/create", middleware())
