@@ -6,7 +6,6 @@ create table if not exists k_dish
 (
     id      bigserial not null constraint k_dish_pkey primary key,
     created timestamp,
-    status  varchar(255),
     updated timestamp,
     uuid    varchar(255),
     cost    double precision,
@@ -21,7 +20,6 @@ create table if not exists k_ingridient
 (
     id      bigserial not null constraint k_ingridient_pkey primary key,
     created timestamp,
-    status  varchar(255),
     updated timestamp,
     uuid    varchar(255),
     name    varchar(255),

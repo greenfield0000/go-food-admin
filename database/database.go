@@ -15,21 +15,31 @@ const (
 	dbTimeZone = "Europe/Moscow"
 )
 
-// OpenDB - Открытие бд
-func OpenDB() (db *sqlx.DB, err error) {
-	dataBaseConf := "host=127.0.0.1 user=" + dbUser + " password=" + dbPassword + " dbname=" + dbName + " port=" + dbPort + " sslmode=" + sslMode + " TimeZone=" + dbTimeZone
-	return sqlx.Connect("postgres", dataBaseConf)
+// databaseHolder databaseHolder connection database
+type databaseHolder struct {
+	Db *sqlx.DB
 }
 
-// startAutoMigrate - Function with start automigrate by struct
+var DatabaseHolder = databaseHolder{}
+
+// ConnectDB - Открытие бд
+func ConnectDB() (databaseHolder, error) {
+	dataBaseConf := "host=127.0.0.1 user=" + dbUser + " password=" + dbPassword + " dbname=" + dbName + " port=" + dbPort + " sslmode=" + sslMode + " TimeZone=" + dbTimeZone
+	connect, err := sqlx.Connect("postgres", dataBaseConf)
+
+	DatabaseHolder.Db = connect
+	return DatabaseHolder, err
+}
+
+// StartAutoMigrate - Function with start automigrate by struct
 func StartAutoMigrate() {
-	db, err := OpenDB()
+	holder, err := ConnectDB()
 	if err != nil {
 		log.Fatal("startAutoMigrate is error = ", err.Error())
 		return
 	}
 	// Запуск миграции
-	db.MustExec(Schema)
+	holder.Db.MustExec(Schema)
 	if err != nil {
 		log.Fatal("startAutoMigrate is error = ", err.Error())
 		return
