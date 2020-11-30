@@ -1,4 +1,4 @@
-package database
+package migration
 
 var Schema = `
 

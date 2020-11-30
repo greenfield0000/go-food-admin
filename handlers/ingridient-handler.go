@@ -9,10 +9,10 @@ import (
 	"net/http"
 )
 
-var dishRepo repository.DishRepository
+var ingridientRepo repository.IngridientRepository
 
-// DishCreateHandler create dish
-func DishCreateHandler(w http.ResponseWriter, r *http.Request) {
+// IngridientCreateHandler create ingr
+func IngridientCreateHandler(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
@@ -20,44 +20,44 @@ func DishCreateHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var dish model.Dish
-	err = json.Unmarshal(body, &dish)
+	var ingr model.Ingridient 
+	err = json.Unmarshal(body, &ingr)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		log.Println("Read body error %s", err)
 		return
 	}
 
-	ok, err := dishRepo.Create(dish)
+	ok, err := ingridientRepo.Create(ingr)
 	if err != nil || !ok {
 		w.WriteHeader(http.StatusInternalServerError)
-		log.Println("dishRepo.Create is error = %s", err)
+		log.Println("ingridientRepo.Create is error = %s", err)
 		return
 	}
 	w.WriteHeader(http.StatusCreated)
 }
 
-// DishAllHandler get list dishes
-func DishAllHandler(w http.ResponseWriter, r *http.Request) {
-	dishes, err := dishRepo.All()
+// IngridientAllHandler get list dishes
+func IngridientAllHandler(w http.ResponseWriter, r *http.Request) {
+	dishes, err := ingridientRepo.All()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		log.Println("dishRepo.All is error = %s", err)
+		log.Println("ingridientRepo.All is error = %s", err)
 		return
 	}
 
 	marshal, err := json.Marshal(dishes)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		log.Println("dishRepo.All is error = %s", err)
+		log.Println("ingridientRepo.All is error = %s", err)
 		return
 	}
 	w.WriteHeader(http.StatusOK)
 	w.Write(marshal)
 }
 
-// DishUpdateHandler update dish
-func DishUpdateHandler(w http.ResponseWriter, r *http.Request) {
+// IngridientUpdateHandler update ingr
+func IngridientUpdateHandler(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
@@ -65,26 +65,26 @@ func DishUpdateHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var dish model.Dish
-	err = json.Unmarshal(body, &dish)
+	var ingr model.Ingridient
+	err = json.Unmarshal(body, &ingr)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		log.Println("Unmarshal body error %s", err)
 		return
 	}
 
-	ok, err := dishRepo.Update(dish)
+	ok, err := ingridientRepo.Update(ingr)
 	if err != nil || !ok {
 		w.WriteHeader(http.StatusInternalServerError)
-		log.Println("dishRepo.Update error %s", err)
+		log.Println("ingridientRepo.Update error %s", err)
 		return
 	}
 
 	w.WriteHeader(http.StatusOK)
 }
 
-// DishDeleteHandler delete dish
-func DishDeleteHandler(w http.ResponseWriter, r *http.Request) {
+// IngridientDeleteHandler delete ingr
+func IngridientDeleteHandler(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
@@ -99,7 +99,7 @@ func DishDeleteHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if ok := dishRepo.Delete(d.Uuid); !ok {
+	if ok := ingridientRepo.Delete(d.Uuid); !ok {
 		w.Write([]byte("Не удалось удалить объект " + d.Uuid))
 		return
 	}

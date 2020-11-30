@@ -1,6 +1,7 @@
 package database
 
 import (
+	"github.com/greenfield0000/go-food/microservices/go-food-admin/database/migration"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"log"
@@ -39,7 +40,7 @@ func StartAutoMigrate() {
 		return
 	}
 	// Запуск миграции
-	holder.Db.MustExec(Schema)
+	holder.Db.MustExec(migration.Schema)
 	if err != nil {
 		log.Fatal("startAutoMigrate is error = ", err.Error())
 		return

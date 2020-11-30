@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/greenfield0000/go-food/microservices/go-food-admin/database"
-	"github.com/greenfield0000/go-food/microservices/go-food-admin/handlers/dish"
+	"github.com/greenfield0000/go-food/microservices/go-food-admin/handlers"
 	"github.com/greenfield0000/go-secure-microservice"
 	"log"
 	"net/http"
@@ -28,16 +28,15 @@ func main() {
 	http.HandleFunc("/", rootHandler)
 
 	// dish
-	http.HandleFunc("/dish/create", middleware(dish.CreateHandler))
-	http.HandleFunc("/dish/all", middleware(dish.AllHandler))
-	http.HandleFunc("/dish/update", middleware(dish.UpdateHandler))
-	http.HandleFunc("/dish/delete", middleware(dish.DeleteHandler))
+	http.HandleFunc("/dish/create", middleware(handlers.DishCreateHandler))
+	http.HandleFunc("/dish/all", middleware(handlers.DishAllHandler))
+	http.HandleFunc("/dish/update", middleware(handlers.DishUpdateHandler))
+	http.HandleFunc("/dish/delete", middleware(handlers.DishDeleteHandler))
 	// ingridient
-	//http.HandleFunc("/ingridient", middleware())
-	//http.HandleFunc("/ingridient/create", middleware())
-	//http.HandleFunc("/ingridient/all", middleware())
-	//http.HandleFunc("/ingridient/update", middleware())
-	//http.HandleFunc("/ingridient/delete", middleware())
+		http.HandleFunc("/ingridient/create", middleware(handlers.IngridientCreateHandler))
+	http.HandleFunc("/ingridient/all", middleware(handlers.IngridientAllHandler))
+	http.HandleFunc("/ingridient/update", middleware(handlers.IngridientUpdateHandler))
+	http.HandleFunc("/ingridient/delete", middleware(handlers.IngridientDeleteHandler))
 
 	log.Fatalln(http.ListenAndServe(getServicePort(), nil))
 }

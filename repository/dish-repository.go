@@ -1,9 +1,10 @@
-package dish
+package repository
 
 import (
 	"github.com/gofrs/uuid"
 	"github.com/greenfield0000/go-food/microservices/go-food-admin/database"
 	"github.com/greenfield0000/go-food/microservices/go-food-admin/model"
+	"github.com/greenfield0000/go-food/microservices/go-food-admin/repository/query"
 	"time"
 )
 
@@ -16,7 +17,7 @@ func (dishRepo *DishRepository) Create(dish model.Dish) (bool, error) {
 	if err != nil {
 		return false, err
 	}
-	database.DatabaseHolder.Db.MustExec(DishCreate,
+	database.DatabaseHolder.Db.MustExec(query.DishCreate,
 		time.Now(),
 		time.Now(),
 		genUUID.String(),
@@ -30,7 +31,7 @@ func (dishRepo *DishRepository) Create(dish model.Dish) (bool, error) {
 
 //All get list dishes
 func (dishRepo *DishRepository) All() ([]model.Dish, error) {
-	rows, err := database.DatabaseHolder.Db.Queryx(DishAll)
+	rows, err := database.DatabaseHolder.Db.Queryx(query.DishAll)
 	dishes := make([]model.Dish, 0)
 
 	if err != nil {
@@ -61,7 +62,7 @@ func (dishRepo *DishRepository) All() ([]model.Dish, error) {
 
 // Update update dish
 func (dishRepo *DishRepository) Update(dish model.Dish) (bool, error) {
-	res, err := database.DatabaseHolder.Db.Exec(DishUpdate,
+	res, err := database.DatabaseHolder.Db.Exec(query.DishUpdate,
 		time.Now(),
 		dish.Cost,
 		dish.Name,
@@ -81,13 +82,13 @@ func (dishRepo *DishRepository) Update(dish model.Dish) (bool, error) {
 
 // Delete delete dish by uuid
 func (dishRepo *DishRepository) Delete(uuid string) bool {
-	_, err := database.DatabaseHolder.Db.Exec(DishDelete, uuid)
+	_, err := database.DatabaseHolder.Db.Exec(query.DishDelete, uuid)
 	return err == nil
 }
 
 // FindByUUID find dish by uuid
 func (dishRepo *DishRepository) FindByUUID(uuid string) (*model.Dish, error) {
-	row := database.DatabaseHolder.Db.QueryRow(DishFindByUUID, uuid)
+	row := database.DatabaseHolder.Db.QueryRow(query.DishFindByUUID, uuid)
 	var d model.Dish
 	err := row.Scan(&d)
 	if err != nil {

@@ -1,4 +1,4 @@
-package dish
+package query
 
 // CRUD query const
 const (
@@ -26,7 +26,6 @@ const (
 				`
 	// Delete
 	DishDelete = `delete from k_dish where uuid = $1`
-
 	// FindByUUID
 	DishFindByUUID = `select * from k_dish where uuid = $1`
 )
