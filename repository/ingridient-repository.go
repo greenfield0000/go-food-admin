@@ -21,8 +21,6 @@ func (ingridientRepo *IngridientRepository) Create(ingr model.Ingridient) (bool,
 		time.Now(),
 		genUUID.String(),
 		ingr.Name,
-		ingr.Weight,
-
 	)
 	return true, nil
 }
@@ -47,7 +45,6 @@ func (ingridientRepo *IngridientRepository) All() ([]model.Ingridient, error) {
 			Updated: ingr.Updated,
 			Uuid:    ingr.Uuid,
 			Name:    ingr.Name,
-			Weight:  ingr.Weight,
 		}
 
 		ingres = append(ingres, mappedingr)
@@ -61,7 +58,6 @@ func (ingridientRepo *IngridientRepository) Update(ingr model.Ingridient) (bool,
 	res, err := database.DatabaseHolder.Db.Exec(query.IngridientUpdate,
 		time.Now(),
 		ingr.Name,
-		ingr.Weight,
 		ingr.Uuid,
 	)
 	if err != nil {

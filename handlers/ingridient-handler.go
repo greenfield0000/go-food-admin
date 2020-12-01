@@ -20,7 +20,7 @@ func IngridientCreateHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var ingr model.Ingridient 
+	var ingr model.Ingridient
 	err = json.Unmarshal(body, &ingr)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)

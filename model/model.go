@@ -13,7 +13,7 @@ type Dish struct {
 	Cost    float32 `json:"cost,omitempty"`
 	Name    string  `json:"name,omitempty"`
 	Picture string  `json:"picture,omitempty"`
-	Weight  uint    `json:"weight,omitempty"`
+	Weight  int64   `json:"weight,omitempty"`
 }
 
 // Ingridient database entity
@@ -23,7 +23,6 @@ type Ingridient struct {
 	Updated time.Time
 	Uuid    string `json:"uuid"`
 	Name    string
-	Weight  uint
 }
 
 // DishIngredient database entity

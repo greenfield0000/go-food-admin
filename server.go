@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/greenfield0000/go-food/microservices/go-food-admin/database"
 	"github.com/greenfield0000/go-food/microservices/go-food-admin/handlers"
+	menu_integration "github.com/greenfield0000/go-food/microservices/go-food-admin/integration/menu-integration"
 	"github.com/greenfield0000/go-secure-microservice"
 	"log"
 	"net/http"
@@ -33,10 +34,13 @@ func main() {
 	http.HandleFunc("/dish/update", middleware(handlers.DishUpdateHandler))
 	http.HandleFunc("/dish/delete", middleware(handlers.DishDeleteHandler))
 	// ingridient
-		http.HandleFunc("/ingridient/create", middleware(handlers.IngridientCreateHandler))
+	http.HandleFunc("/ingridient/create", middleware(handlers.IngridientCreateHandler))
 	http.HandleFunc("/ingridient/all", middleware(handlers.IngridientAllHandler))
 	http.HandleFunc("/ingridient/update", middleware(handlers.IngridientUpdateHandler))
 	http.HandleFunc("/ingridient/delete", middleware(handlers.IngridientDeleteHandler))
+
+	// menu integration
+	http.HandleFunc("/integration/menu", middleware(menu_integration.MenuIntegrationHandler))
 
 	log.Fatalln(http.ListenAndServe(getServicePort(), nil))
 }

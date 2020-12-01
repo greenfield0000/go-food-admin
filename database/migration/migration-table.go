@@ -22,8 +22,7 @@ create table if not exists k_ingridient
     created timestamp,
     updated timestamp,
     uuid    varchar(255),
-    name    varchar(255),
-    weight  integer
+    name    varchar(255)
 );
 
 alter table k_ingridient owner to admin;
