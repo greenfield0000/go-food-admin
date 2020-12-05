@@ -2,12 +2,16 @@ package menu_integration
 
 import (
 	"bytes"
+	"github.com/gofrs/uuid"
+	"github.com/greenfield0000/go-food/microservices/go-food-admin/database"
+	"github.com/greenfield0000/go-food/microservices/go-food-admin/model/handbook"
 	"github.com/tealeg/xlsx/v3"
 	"io"
 	"log"
 	"mime/multipart"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 const (
@@ -17,6 +21,10 @@ const (
 	FROMCOLUMN = 2
 	// Полезные данные заканчиваются на
 	TOCOLUMN = 5
+
+	INSERT_DISH              = "INSERT INTO k_dish (created, updated, uuid, cost, name, weight, category_id) VALUES ($1, $2, $3, $4, $5, $6, $7) returning id;"
+	INSERT_INGRIDIDIENT      = "INSERT INTO k_ingridient (created, updated, uuid, name) VALUES ($1, $2, $3, $4) returning id;"
+	INSERT_DISH_INGRIDIDIENT = "INSERT INTO k_dish_ingredient (dishid, ingridientid) VALUES ($1, $2);"
 )
 
 type ingridientMapper struct {
@@ -33,6 +41,11 @@ type dishMapper struct {
 type dishGroup struct {
 	Name   string
 	dishes []*dishMapper
+}
+
+type dishIngridientLink struct {
+	InsertedDishId       int64
+	InsertedIngridientId int64
 }
 
 // MenuIntegrationHandler integrate menu xls file from old standard
@@ -103,13 +116,92 @@ func MenuIntegrationHandler(w http.ResponseWriter, r *http.Request) {
 			dg.dishes = make([]*dishMapper, 0)
 		}
 
-		dg.dishes = append(dg.dishes, &dMapper)
+		// Похеренные записи не добавляем!
+		if dMapper.Name != "" {
+			dg.dishes = append(dg.dishes, &dMapper)
+		}
 
 		return nil
 	}, xlsx.SkipEmptyRows)
-	log.Println("aasd")
+	writeToDB(mp)
 }
 
+// writeToDB function to write dish group data into db
+func writeToDB(dGropMap map[string]*dishGroup) {
+	if dGropMap != nil {
+		links := make([]dishIngridientLink, 0)
+		for k, dg := range dGropMap {
+			dishes := dg.dishes
+
+			categoryId := handbook.GetCategoryIndexByName(k)
+			if categoryId == -1 {
+				log.Println("Не удалось определить категорию!")
+				return
+			}
+			// Вставка блюд
+			for _, dish := range dishes {
+				insertedDishId := insertDish(dish, categoryId)
+				ingList := dish.ingrList
+				// Вставка ингридиентов
+				for _, ingridient := range ingList {
+					insertedIngridientId := insertIngridient(ingridient)
+
+					if insertedDishId != -1 && insertedIngridientId != -1 {
+						links = append(links, dishIngridientLink{
+							InsertedDishId:       insertedDishId,
+							InsertedIngridientId: insertedIngridientId,
+						})
+					}
+					insertedIngridientId = -1
+				}
+			}
+		}
+
+		for _, link := range links {
+			database.DatabaseHolder.Db.Exec(INSERT_DISH_INGRIDIDIENT,
+				link.InsertedDishId,
+				link.InsertedIngridientId,
+			)
+		}
+	}
+}
+
+func insertIngridient(ingridient *ingridientMapper) int64 {
+	var insertedIngridientId int64 = -1
+
+	database.DatabaseHolder.Db.QueryRowx(INSERT_INGRIDIDIENT,
+		time.Now(),
+		time.Now(),
+		genUUID(),
+		ingridient.Name,
+	).Scan(&insertedIngridientId)
+
+	return insertedIngridientId
+}
+
+func insertDish(dish *dishMapper, categoryId int) int64 {
+
+	var insertedDishId int64 = -1
+
+	database.DatabaseHolder.Db.QueryRowx(INSERT_DISH,
+		time.Now(),
+		time.Now(),
+		genUUID(),
+		dish.Cost,
+		dish.Name,
+		dish.Weight,
+		categoryId,
+	).Scan(&insertedDishId)
+
+	return insertedDishId
+}
+
+func genUUID() string {
+	genUUID, _ := uuid.NewV4()
+	return genUUID.String()
+}
+
+// getWordBook read excel file from request
 func getWordBook(r *http.Request) (*xlsx.File, *multipart.FileHeader, error) {
 	// 5мб
 	r.ParseMultipartForm(5000000)

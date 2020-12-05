@@ -29,6 +29,9 @@ func ConnectDB() (databaseHolder, error) {
 	connect, err := sqlx.Connect("postgres", dataBaseConf)
 
 	DatabaseHolder.Db = connect
+	//DatabaseHolder.Db.SetMaxIdleConns(10)
+	//DatabaseHolder.Db.SetMaxOpenConns(100 )
+
 	return DatabaseHolder, err
 }
 
