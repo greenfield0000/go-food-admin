@@ -24,7 +24,7 @@ INSERT INTO k_dish_category (id, sysname, name) VALUES (6, 'Bake', 'Выпечк
 INSERT INTO k_dish_category (id, sysname, name) VALUES (7, 'Confectionery', 'Кондитерские изделия') on conflict (id) do nothing;;
 INSERT INTO k_dish_category (id, sysname, name) VALUES (8, 'Cakes', 'Торты') on conflict (id) do nothing;;
 
-INSERT INTO k_eattype (id, uuid, created, updated, userid, name, sysname) VALUES (1, '93dc4394-47c9-11eb-ad37-430f9829063b', '2020-12-27 01:28:19.000000', '2020-12-27 01:28:19.000000', 1, 'Завтра', 'Breakfast') on conflict (id) do nothing;;
+INSERT INTO k_eattype (id, uuid, created, updated, userid, name, sysname) VALUES (1, '93dc4394-47c9-11eb-ad37-430f9829063b', '2020-12-27 01:28:19.000000', '2020-12-27 01:28:19.000000', 1, 'Завтрак', 'Breakfast') on conflict (id) do nothing;;
 INSERT INTO k_eattype (id, uuid, created, updated, userid, name, sysname) VALUES (2, '9aca1a32-47c9-11eb-b944-f375365165a0', '2020-12-27 01:28:19.000000', '2020-12-27 01:28:19.000000', 1, 'Обед', 'Lunch') on conflict (id) do nothing;;
 INSERT INTO k_eattype (id, uuid, created, updated, userid, name, sysname) VALUES (3, 'a07c6502-47c9-11eb-bccb-cfad46344a6a', '2020-12-27 01:28:19.000000', '2020-12-27 01:28:19.000000', 1, 'Ужин', 'Dinner') on conflict (id) do nothing;;
 
