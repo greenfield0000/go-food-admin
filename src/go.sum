@@ -12,8 +12,8 @@ github.com/google/btree v1.0.0/go.mod h1:lNA+9X1NB3Zf8V7Ke586lFgjr2dZNuvo3lPJSGZ
 github.com/google/go-cmp v0.3.1/go.mod h1:8QqcDgzrUqlUb/G2PQTWiueGozuR1884gddMywk6iLU=
 github.com/google/go-cmp v0.4.0 h1:xsAVV57WRhGj6kEIi8ReJzQlHHqcBYCElAvkovg3B/4=
 github.com/google/go-cmp v0.4.0/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
-github.com/greenfield0000/go-secure-microservice v0.0.0-20201128194156-6139a8986cee h1:XaQhmm9Jddrm5D5GDmadU8L7PN4YlYdibPHN9pqeK0Y=
-github.com/greenfield0000/go-secure-microservice v0.0.0-20201128194156-6139a8986cee/go.mod h1:H76xc2TW+L/+PtXJt5dG1Oi+u8KPHkCy8gCarJRXsZk=
+github.com/greenfield0000/go-secure-microservice v0.0.0-20201226193348-925f43ea3155 h1:HYuPm4kX07lVwJ529mColz493BEAPHngUWTmSsH6LYk=
+github.com/greenfield0000/go-secure-microservice v0.0.0-20201226193348-925f43ea3155/go.mod h1:H76xc2TW+L/+PtXJt5dG1Oi+u8KPHkCy8gCarJRXsZk=
 github.com/jmoiron/sqlx v1.2.0 h1:41Ip0zITnmWNR/vHV+S4m+VoUivnWY5E4OJfLZjCJMA=
 github.com/jmoiron/sqlx v1.2.0/go.mod h1:1FEQNm3xlJgrMD+FBdI9+xvCksHtbpVBBw5dYhBSsks=
 github.com/kr/pretty v0.1.0 h1:L/CwN0zerZDmRFUapSPitk6f+Q3+0za1rQkzVuMiMFI=

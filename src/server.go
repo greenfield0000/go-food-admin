@@ -51,21 +51,22 @@ func middleware(next http.HandlerFunc) http.HandlerFunc {
 		log.Println("Run middleware start")
 		defer log.Println("Run middleware finish")
 
-		err := authMiddleWare(r)
+		accessDetails, err := authMiddleWareDetails(r)
 		if err != nil {
 			w.WriteHeader(http.StatusForbidden)
 			w.Write([]byte("Forbidden"))
 			return
 		}
 		w.Header().Set("Content-Type", "application/json")
+		//secure.SetUserIdHeaderRequest(r, accessDetails.UserId)
+		secure.SetHeaderAccessDetailsUserId(r, accessDetails.UserId)
 		next.ServeHTTP(w, r)
 	}
 }
 
-// authMiddleWare middleware function with auth protect request
-func authMiddleWare(r *http.Request) error {
-	_, err := secure.ExtractTokenMetadata(r)
-	return err
+// authMiddleWareDetails middleware function with auth protect request with details
+func authMiddleWareDetails(r *http.Request) (*secure.AccessDetails, error) {
+	return secure.ExtractTokenMetadata(r)
 }
 
 // getServicePort get port with service listen
