@@ -28,7 +28,7 @@ func IngridientCreateHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ok, err := ingridientRepo.Create(ingr)
+	ok, err := ingridientRepo.Create(r.Context(), ingr)
 	if err != nil || !ok {
 		w.WriteHeader(http.StatusInternalServerError)
 		log.Println("ingridientRepo.Create is error = %s", err)
@@ -73,7 +73,7 @@ func IngridientUpdateHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ok, err := ingridientRepo.Update(ingr)
+	ok, err := ingridientRepo.Update(r.Context(), ingr)
 	if err != nil || !ok {
 		w.WriteHeader(http.StatusInternalServerError)
 		log.Println("ingridientRepo.Update error %s", err)

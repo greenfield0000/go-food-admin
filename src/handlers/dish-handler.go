@@ -28,7 +28,7 @@ func DishCreateHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ok, err := dishRepo.Create(dish)
+	ok, err := dishRepo.Create(r.Context(), dish)
 	if err != nil || !ok {
 		w.WriteHeader(http.StatusInternalServerError)
 		log.Println("dishRepo.Create is error = %s", err)
@@ -73,7 +73,7 @@ func DishUpdateHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ok, err := dishRepo.Update(dish)
+	ok, err := dishRepo.Update(r.Context(), dish)
 	if err != nil || !ok {
 		w.WriteHeader(http.StatusInternalServerError)
 		log.Println("dishRepo.Update error %s", err)

@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"context"
 	"github.com/gofrs/uuid"
 	"github.com/greenfield0000/go-food/microservices/go-food-admin/database"
 	"github.com/greenfield0000/go-food/microservices/go-food-admin/model"
@@ -12,7 +13,8 @@ import (
 type DishRepository struct{}
 
 // Create create new dish in db
-func (dishRepo *DishRepository) Create(dish model.Dish) (bool, error) {
+func (dishRepo *DishRepository) Create(context context.Context, dish model.Dish) (bool, error) {
+	//userId := context.Value("userId")
 	genUUID, err := uuid.NewV4()
 	if err != nil {
 		return false, err
@@ -63,7 +65,8 @@ func (dishRepo *DishRepository) All() ([]model.Dish, error) {
 }
 
 // Update update dish
-func (dishRepo *DishRepository) Update(dish model.Dish) (bool, error) {
+func (dishRepo *DishRepository) Update(context context.Context, dish model.Dish) (bool, error) {
+	//userId := context.Value("userId")
 	res, err := database.DatabaseHolder.Db.Exec(query.DishUpdate,
 		time.Now(),
 		dish.Cost,

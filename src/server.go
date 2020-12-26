@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"github.com/greenfield0000/go-food/microservices/go-food-admin/database"
 	"github.com/greenfield0000/go-food/microservices/go-food-admin/handlers"
 	menu_integration "github.com/greenfield0000/go-food/microservices/go-food-admin/integration/menu-integration"
@@ -8,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 )
 
 func init() {
@@ -58,9 +60,8 @@ func middleware(next http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 		w.Header().Set("Content-Type", "application/json")
-		//secure.SetUserIdHeaderRequest(r, accessDetails.UserId)
-		secure.SetHeaderAccessDetailsUserId(r, accessDetails.UserId)
-		next.ServeHTTP(w, r)
+		context := context.WithValue(r.Context(), "userId", strconv.FormatUint(accessDetails.UserId, 10))
+		next.ServeHTTP(w, r.WithContext(context))
 	}
 }
 

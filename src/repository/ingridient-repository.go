@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"context"
 	"github.com/gofrs/uuid"
 	"github.com/greenfield0000/go-food/microservices/go-food-admin/database"
 	"github.com/greenfield0000/go-food/microservices/go-food-admin/model"
@@ -11,7 +12,7 @@ import (
 type IngridientRepository struct{}
 
 // Create create new ingr in db
-func (ingridientRepo *IngridientRepository) Create(ingr model.Ingridient) (bool, error) {
+func (ingridientRepo *IngridientRepository) Create(context context.Context, ingr model.Ingridient) (bool, error) {
 	genUUID, err := uuid.NewV4()
 	if err != nil {
 		return false, err
@@ -56,7 +57,7 @@ func (ingridientRepo *IngridientRepository) All() ([]model.Ingridient, error) {
 }
 
 // Update update ingr
-func (ingridientRepo *IngridientRepository) Update(ingr model.Ingridient) (bool, error) {
+func (ingridientRepo *IngridientRepository) Update(ctx context.Context, ingr model.Ingridient) (bool, error) {
 	res, err := database.DatabaseHolder.Db.Exec(query.IngridientUpdate,
 		time.Now(),
 		ingr.Name,
