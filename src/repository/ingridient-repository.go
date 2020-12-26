@@ -41,10 +41,12 @@ func (ingridientRepo *IngridientRepository) All() ([]model.Ingridient, error) {
 		}
 
 		mappedingr := model.Ingridient{
-			Created: ingr.Created,
-			Updated: ingr.Updated,
-			Uuid:    ingr.Uuid,
-			Name:    ingr.Name,
+			AuditEntity: model.AuditEntity{
+				Created: ingr.Created,
+				Updated: ingr.Updated,
+				Uuid:    ingr.Uuid,
+			},
+			Name: ingr.Name,
 		}
 
 		ingres = append(ingres, mappedingr)

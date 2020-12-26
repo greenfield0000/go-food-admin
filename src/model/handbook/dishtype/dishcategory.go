@@ -1,10 +1,10 @@
-package handbook
+package dishtype
 
-type DishCategory int
+type DishType int
 
 const (
 	// Салаты
-	Salad DishCategory = iota + 1
+	Salad DishType = iota + 1
 	// Первые блюда
 	FirstMeal
 	// Вторые блюда
@@ -24,15 +24,16 @@ const (
 var categoryMap map[string]categoryDescription
 
 type categoryDescription struct {
-	dishCategory DishCategory
+	dishCategory DishType
 	description  string
 }
 
-func (dc DishCategory) String() string {
+func (dc DishType) String() string {
 	s := [...]string{"Salad", "FirstMeal", "SecondMeal", "SideDish", "Bread", "Bake", "Confectionery", "Cakes"}[dc]
 	return s
 }
 
+// getSupportedDishCategory get all dish category (Map {key - category name, value - category description} )
 func getSupportedDishCategory() map[string]categoryDescription {
 	if categoryMap == nil {
 		categoryMap = make(map[string]categoryDescription, 0)
@@ -55,6 +56,7 @@ func getSupportedDishCategory() map[string]categoryDescription {
 	return categoryMap
 }
 
+// GetCategoryIndexByName return category instance by name
 func GetCategoryIndexByName(name string) (index int) {
 	category := getSupportedDishCategory()
 	value, ok := category[name]

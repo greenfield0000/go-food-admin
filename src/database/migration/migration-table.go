@@ -58,4 +58,64 @@ create table if not exists k_dish_ingredient
 );
 
 alter table k_dish_ingredient owner to admin;
+
+create table if not exists k_eattype
+(
+    id      bigserial not null
+        constraint k_eattype_pk
+            primary key,
+    uuid    varchar(40),
+    created timestamp,
+    updated timestamp,
+    userid  bigint,
+    name    varchar(255),
+    sysname varchar(255)
+);
+
+alter table k_eattype
+    owner to admin;
+
+create table if not exists k_menu_property
+(
+    id         bigserial not null
+        constraint k_menu_property_pk
+            primary key,
+    uuid       varchar(40),
+    created    timestamp,
+    updated    timestamp,
+    userid     bigint,
+    startdate  timestamp,
+    finishdate timestamp
+);
+
+alter table k_menu_property
+    owner to admin;
+
+create table if not exists k_menu
+(
+    id               bigserial not null
+        constraint k_menu_pk
+            primary key,
+    uuid             varchar(40),
+    created          timestamp,
+    updated          timestamp,
+    userid           bigint,
+    dish_id          bigint
+        constraint k_menu_k_dish_id_fk
+            references k_dish,
+    eat_type_id      bigint
+        constraint k_menu_k_eattype_id_fk
+            references k_eattype,
+    menu_property_id bigint
+        constraint k_menu_k_menu_property_id_fk
+            references k_menu_property
+);
+
+comment on table k_menu is 'Меню';
+
+alter table k_menu
+    owner to admin;
+
+create unique index if not exists k_menu_uuid_uindex
+    on k_menu (uuid);
 `

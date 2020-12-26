@@ -45,9 +45,11 @@ func (dishRepo *DishRepository) All() ([]model.Dish, error) {
 		}
 
 		mappedDish := model.Dish{
-			Created: dish.Created,
-			Updated: dish.Updated,
-			Uuid:    dish.Uuid,
+			AuditEntity: model.AuditEntity{
+				Created: dish.Created,
+				Updated: dish.Updated,
+				Uuid:    dish.Uuid,
+			},
 			Cost:    dish.Cost,
 			Name:    dish.Name,
 			Picture: dish.Picture,

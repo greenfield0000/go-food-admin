@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"github.com/gofrs/uuid"
 	"github.com/greenfield0000/go-food/microservices/go-food-admin/database"
-	"github.com/greenfield0000/go-food/microservices/go-food-admin/model/handbook"
+	"github.com/greenfield0000/go-food/microservices/go-food-admin/model/handbook/dishtype"
 	"github.com/tealeg/xlsx/v3"
 	"io"
 	"log"
@@ -133,7 +133,7 @@ func writeToDB(dGropMap map[string]*dishGroup) {
 		for k, dg := range dGropMap {
 			dishes := dg.dishes
 
-			categoryId := handbook.GetCategoryIndexByName(k)
+			categoryId := dishtype.GetCategoryIndexByName(k)
 			if categoryId == -1 {
 				log.Println("Не удалось определить категорию!")
 				return
@@ -180,7 +180,6 @@ func insertIngridient(ingridient *ingridientMapper) int64 {
 }
 
 func insertDish(dish *dishMapper, categoryId int) int64 {
-
 	var insertedDishId int64 = -1
 
 	database.DatabaseHolder.Db.QueryRowx(INSERT_DISH,
