@@ -25,14 +25,13 @@ var categoryMap map[string]categoryDescription
 
 type categoryDescription struct {
 	dishCategory DishCategory
-	description string
+	description  string
 }
 
 func (dc DishCategory) String() string {
 	s := [...]string{"Salad", "FirstMeal", "SecondMeal", "SideDish", "Bread", "Bake", "Confectionery", "Cakes"}[dc]
 	return s
 }
-
 
 func getSupportedDishCategory() map[string]categoryDescription {
 	if categoryMap == nil {
@@ -55,7 +54,6 @@ func getSupportedDishCategory() map[string]categoryDescription {
 
 	return categoryMap
 }
-
 
 func GetCategoryIndexByName(name string) (index int) {
 	category := getSupportedDishCategory()
