@@ -2,7 +2,8 @@ package handlers
 
 import (
 	"encoding/json"
-	"github.com/greenfield0000/go-food/microservices/go-food-admin/model"
+	menu_dto "github.com/greenfield0000/go-food/microservices/go-food-admin/handlers/dto/request/menu-dto"
+	_ "github.com/greenfield0000/go-food/microservices/go-food-admin/handlers/dto/request/menu-dto"
 	"github.com/greenfield0000/go-food/microservices/go-food-admin/repository"
 	"io/ioutil"
 	"log"
@@ -20,15 +21,15 @@ func MenuCreateHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var menu model.Menu
-	err = json.Unmarshal(body, &menu)
+	var createMenuRequest menu_dto.MenuCreateRequest
+	err = json.Unmarshal(body, &createMenuRequest)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		log.Println("Read body error %s", err)
 		return
 	}
 
-	ok, err := menuRepo.Create(r.Context(), menu)
+	ok, err := menuRepo.Create(r.Context(), createMenuRequest)
 	if err != nil || !ok {
 		w.WriteHeader(http.StatusInternalServerError)
 		log.Println("menuRepo.Create is error = %s", err)
