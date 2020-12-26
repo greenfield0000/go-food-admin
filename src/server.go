@@ -40,7 +40,9 @@ func main() {
 	http.HandleFunc("/ingridient/all", middleware(handlers.IngridientAllHandler))
 	http.HandleFunc("/ingridient/update", middleware(handlers.IngridientUpdateHandler))
 	http.HandleFunc("/ingridient/delete", middleware(handlers.IngridientDeleteHandler))
-
+	// menu
+	http.HandleFunc("/menu/create",  middleware(handlers.MenuCreateHandler))
+	http.HandleFunc("/menu/all", 	middleware(handlers.MenuAllHandler))
 	// menu integration
 	http.HandleFunc("/integration/menu", middleware(menu_integration.MenuIntegrationHandler))
 
