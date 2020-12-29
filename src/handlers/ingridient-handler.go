@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-var ingridientRepo repository.IngridientRepository
+var ingridientRepo repository.CrudIngridientRepository
 
 // IngridientCreateHandler create ingr
 func IngridientCreateHandler(w http.ResponseWriter, r *http.Request) {

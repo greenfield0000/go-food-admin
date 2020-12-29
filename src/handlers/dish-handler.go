@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-var dishRepo repository.DishRepository
+var dishRepo repository.CrudDishRepository
 
 // DishCreateHandler create dish
 func DishCreateHandler(w http.ResponseWriter, r *http.Request) {

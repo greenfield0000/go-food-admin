@@ -5,21 +5,21 @@ import (
 	"github.com/gofrs/uuid"
 	"github.com/greenfield0000/go-food/microservices/go-food-admin/database"
 	"github.com/greenfield0000/go-food/microservices/go-food-admin/model"
-	"github.com/greenfield0000/go-food/microservices/go-food-admin/repository/query"
+	"github.com/greenfield0000/go-food/microservices/go-food-admin/repository/crudquery"
 	"time"
 )
 
 // Dish repo
-type DishRepository struct{}
+type CrudDishRepository struct{}
 
 // Create create new dish in db
-func (dishRepo *DishRepository) Create(context context.Context, dish model.Dish) (bool, error) {
+func (dishRepo *CrudDishRepository) Create(context context.Context, dish model.Dish) (bool, error) {
 	//userId := context.Value("userId")
 	genUUID, err := uuid.NewV4()
 	if err != nil {
 		return false, err
 	}
-	database.DatabaseHolder.Db.MustExec(query.DishCreate,
+	database.DatabaseHolder.Db.MustExec(crudquery.DishCreate,
 		time.Now(),
 		time.Now(),
 		genUUID.String(),
@@ -32,8 +32,8 @@ func (dishRepo *DishRepository) Create(context context.Context, dish model.Dish)
 }
 
 //All get list dishes
-func (dishRepo *DishRepository) All() ([]model.Dish, error) {
-	rows, err := database.DatabaseHolder.Db.Queryx(query.DishAll)
+func (dishRepo *CrudDishRepository) All() ([]model.Dish, error) {
+	rows, err := database.DatabaseHolder.Db.Queryx(crudquery.DishAll)
 	dishes := make([]model.Dish, 0)
 
 	if err != nil {
@@ -65,9 +65,9 @@ func (dishRepo *DishRepository) All() ([]model.Dish, error) {
 }
 
 // Update update dish
-func (dishRepo *DishRepository) Update(context context.Context, dish model.Dish) (bool, error) {
+func (dishRepo *CrudDishRepository) Update(context context.Context, dish model.Dish) (bool, error) {
 	//userId := context.Value("userId")
-	res, err := database.DatabaseHolder.Db.Exec(query.DishUpdate,
+	res, err := database.DatabaseHolder.Db.Exec(crudquery.DishUpdate,
 		time.Now(),
 		dish.Cost,
 		dish.Name,
@@ -86,14 +86,14 @@ func (dishRepo *DishRepository) Update(context context.Context, dish model.Dish)
 }
 
 // Delete delete dish by uuid
-func (dishRepo *DishRepository) Delete(uuid string) bool {
-	_, err := database.DatabaseHolder.Db.Exec(query.DishDelete, uuid)
+func (dishRepo *CrudDishRepository) Delete(uuid string) bool {
+	_, err := database.DatabaseHolder.Db.Exec(crudquery.DishDelete, uuid)
 	return err == nil
 }
 
 // FindByUUID find dish by uuid
-func (dishRepo *DishRepository) FindByUUID(uuid string) (*model.Dish, error) {
-	row := database.DatabaseHolder.Db.QueryRow(query.DishFindByUUID, uuid)
+func (dishRepo *CrudDishRepository) FindByUUID(uuid string) (*model.Dish, error) {
+	row := database.DatabaseHolder.Db.QueryRow(crudquery.DishFindByUUID, uuid)
 	var d model.Dish
 	err := row.Scan(&d)
 	if err != nil {

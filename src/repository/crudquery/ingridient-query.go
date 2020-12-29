@@ -1,4 +1,4 @@
-package query
+package crudquery
 
 // CRUD query const
 const (
