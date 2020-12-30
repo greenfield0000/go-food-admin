@@ -49,31 +49,32 @@ type Menu struct {
 }
 
 type MenuDish struct {
-	Name    string `json:"name"`
-	Cost    int64  `json:"cost"`
-	Picture string `json:"picture"`
-	Weight  int64  `json:"weight"`
+	Name         string `json:"name"`
+	Cost         int64  `json:"cost"`
+	Picture      string `json:"picture"`
+	Weight       int64  `json:"weight"`
+	DishCategory string `json:"category"`
 }
 
 type MenuItem struct {
-	Category string     `json:"category"`
-	MenuDish []MenuDish `json:"menu_dish"`
+	CategoryName string     `json:"category"`
+	MenuDish     []MenuDish `json:"menu_dish"`
 }
 
 type Bundle struct {
-	Property Property   `json:"property"`
-	Menu     []MenuItem `json:"menu_items"`
+	Property  Property   `json:"property"`
+	MenuItems []MenuItem `json:"menu_items"`
 }
 
 // kd.weight as dish_weight, ke.name as eat_name, kdc.name as dish_category_name
 type MenuAllCustom struct {
-	StartDate        *time.Time   `db:"startdate"`
-	FinishDate       *time.Time   `db:"finishdate"`
-	DishName         *string `db:"dish_name"`
-	DishCost         *int64  `db:"dish_cost"`
-	DishWeight       *int64  `db:"dish_weight"`
-	EatName          *string `db:"eat_name"`
-	DishCategoryName *string `db:"dish_category_name"`
+	StartDate        time.Time `db:"startdate"`
+	FinishDate       time.Time `db:"finishdate"`
+	DishName         string    `db:"dish_name"`
+	DishCost         int64     `db:"dish_cost"`
+	DishWeight       int64     `db:"dish_weight"`
+	EatName          string    `db:"eat_name"`
+	DishCategoryName string    `db:"dish_category_name"`
 }
 
 // MenuCreateRequest Запрос для создания меню
@@ -83,5 +84,5 @@ type MenuCreateRequest struct {
 
 // MenuAllResponse ответ списка меню
 type MenuAllResponse struct {
-	Bundle []Bundle `json:"bundle"`
+	Bundle []*Bundle `json:"bundle"`
 }

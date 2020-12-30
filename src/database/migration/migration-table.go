@@ -112,7 +112,9 @@ create table if not exists k_menu
             references k_eattype,
     menu_property_id bigint
         constraint k_menu_k_menu_property_id_fk
-            references k_menu_property
+            references k_menu_property,
+    constraint k_menu_bundle
+        unique (dish_id, eat_type_id, menu_property_id)
 );
 
 comment on table k_menu is 'Меню';
