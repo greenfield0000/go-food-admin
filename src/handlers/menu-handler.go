@@ -31,6 +31,18 @@ func MenuCreateHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Перед тем как добавить, проверим пересечения по дате
+	menu := &createMenuRequest.Menu
+	if menu == nil {
+		w.Write([]byte("Отсутствует аттрибут menu!"))
+		log.Println("Missed json attribute \"menu\"", err)
+		return
+	}
+
+	if isValid(w, menu, err) {
+		return
+	}
+
 	ok, err := crudMenuRepository.Create(r.Context(), createMenuRequest)
 	if err != nil || !ok {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -38,6 +50,46 @@ func MenuCreateHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.WriteHeader(http.StatusCreated)
+}
+
+func isValid(w http.ResponseWriter, menu *dto.Menu, err error) bool {
+	// TODO Возможно у json кодогенератора есть такой чек
+
+	property := &menu.Property
+	if property == nil {
+		w.Write([]byte("Отсутствует аттрибут menu.property!"))
+		log.Println("Missed json attribute \"menu.property\"", err)
+		return true
+	}
+	startDate := &property.StartDate
+	if startDate == nil {
+		w.Write([]byte("Отсутствует аттрибут menu.property.startDate!"))
+		log.Println("Missed json attribute \"menu.property.startDate\"", err)
+		return true
+	}
+
+	finishDate := &property.FinishDate
+	if finishDate == nil {
+		w.Write([]byte("Отсутствует аттрибут menu.property.finishDate!"))
+		log.Println("Missed json attribute \"menu.property.finishDate\"", err)
+		return true
+	}
+
+	dishes := &menu.Dishes
+	if dishes == nil {
+		w.Write([]byte("Отсутствует аттрибут menu.dishes!"))
+		log.Println("Missed json attribute \"menu.dishes\"", err)
+		return true
+	}
+	// TODO Возможно у json кодогенератора есть такой чек
+
+	if menuRepository.IsExistDateCollision(startDate, finishDate) {
+		w.Write([]byte("Существует пересечение с другими меню. Добавление невозможно!"))
+		log.Println("Exist collision with other menu. Add impossible!", err)
+		return true
+	}
+
+	return false
 }
 
 // MenuAllHandler get list menu
