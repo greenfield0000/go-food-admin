@@ -57,8 +57,8 @@ type MenuDish struct {
 }
 
 type MenuItem struct {
-	CategoryName string     `json:"category"`
-	MenuDish     []MenuDish `json:"menu_dish"`
+	CategoryName string      `json:"category"`
+	MenuDish     []*MenuDish `json:"menu_dish"`
 }
 
 type Bundle struct {
@@ -84,5 +84,5 @@ type MenuCreateRequest struct {
 
 // MenuAllResponse ответ списка меню
 type MenuAllResponse struct {
-	Bundle []*Bundle `json:"bundle"`
+	Bundle []Bundle `json:"bundle"`
 }

@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"time"
 )
 
 var (
@@ -75,6 +76,12 @@ func isValid(w http.ResponseWriter, menu *dto.Menu, err error) bool {
 		return true
 	}
 
+	if finishDate.Before(startDate.Time) {
+		w.Write([]byte("Дата окончания не может быть раньше даты начала!"))
+		log.Println("StartDate must be before finishDate", err)
+		return true
+	}
+
 	dishes := &menu.Dishes
 	if dishes == nil {
 		w.Write([]byte("Отсутствует аттрибут menu.dishes!"))
@@ -115,71 +122,107 @@ func MenuAllHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(marshal)
 }
 
-func processBundle(list []dto.MenuAllCustom) []*dto.Bundle {
+func processBundle(list []dto.MenuAllCustom) []dto.Bundle {
 	if list == nil {
-		return []*dto.Bundle{}
+		return []dto.Bundle{}
 	}
-	bundles := []*dto.Bundle{}
-	setsDate := make(map[string]bool)
-
-	// Как только встречаем новую дату, считаем, что это новый бандл
-	var bundleItem dto.Bundle
-	var menuCategoryMap map[string]dto.MenuItem
+	// дата начала -> тип приема пищи (обед, завтрак) -> список блюд
+	bundleMap := make(map[string]map[string]*dto.MenuItem)
+	// старт дату и финиш дату буду хранить так
+	dateMap := make(map[string]struct {
+		StartDate  time.Time
+		FinishDate time.Time
+	})
 	for i := range list {
 		menuRow := list[i]
 
-		dateTime := menuRow.StartDate
-		dateTimeString := dateTime.String()
-		if _, exist := setsDate[dateTimeString]; !exist {
-			bundleItem = dto.Bundle{}
-			bundles = append(bundles, &bundleItem)
+		startDate := menuRow.StartDate
+		finishDate := menuRow.FinishDate
 
-			setsDate[dateTimeString] = true
-			// Установим свойства
-			bundleItem.Property = dto.Property{
-				StartDate: dto.Date{
-					Time: menuRow.StartDate,
-				},
-				FinishDate: dto.Date{
-					menuRow.FinishDate,
-				},
-			}
-		}
-
-		// Если меню еще не создано, создаем
-		if bundleItem.MenuItems == nil {
-			bundleItem.MenuItems = make([]dto.MenuItem, 0)
-		}
-		menuItems := bundleItem.MenuItems
-		// Категория - список блюд
-		if menuCategoryMap == nil {
-			menuCategoryMap = make(map[string]dto.MenuItem, 0)
+		startDateString := startDate.String()
+		if _, ok := dateMap[startDateString]; !ok {
+			dateMap[startDateString] = struct {
+				StartDate  time.Time
+				FinishDate time.Time
+			}{StartDate: startDate, FinishDate: finishDate}
 		}
 		eatNameType := menuRow.EatName
 
-		menuItem := getMenuItemByEatNameType(menuCategoryMap, eatNameType)
-		menuItem.MenuDish = append(menuItem.MenuDish, dto.MenuDish{
+		menuItem := getMenuItem(bundleMap, startDateString, eatNameType)
+		menuItem.MenuDish = append(menuItem.MenuDish, &dto.MenuDish{
 			Name:         menuRow.DishName,
 			Cost:         menuRow.DishCost,
 			Picture:      "",
 			Weight:       menuRow.DishWeight,
 			DishCategory: menuRow.DishCategoryName,
 		})
+	}
 
-		menuItems = append(menuItems, menuItem)
-		bundleItem.MenuItems = menuItems
+	bundles := make([]dto.Bundle, 0)
+	for startDate, value := range dateMap {
+		if _, ok := bundleMap[startDate]; ok {
+			bundle := dto.Bundle{
+				Property: dto.Property{
+					StartDate: dto.Date{
+						Time: value.StartDate,
+					},
+					FinishDate: dto.Date{
+						Time: value.FinishDate,
+					},
+				},
+				MenuItems: getMenuItems(bundleMap, startDate),
+			}
+			bundles = append(bundles, bundle)
+		}
 	}
 
 	return bundles
 }
 
-func getMenuItemByEatNameType(menuCategoryMap map[string]dto.MenuItem, eatNameType string) dto.MenuItem {
+func getMenuItems(bundleMap map[string]map[string]*dto.MenuItem, startDate string) []dto.MenuItem {
+	if bundleMap == nil {
+		return []dto.MenuItem{}
+	}
+
+	menuItems := make([]dto.MenuItem, 0)
 	// Если такая категория есть, то вернем ее
-	if menuItem, exist := menuCategoryMap[eatNameType]; exist && len(eatNameType) > 0 {
-		return menuItem
+	if menuItemMap, exist := bundleMap[startDate]; exist {
+		for _, val := range menuItemMap {
+			menuItem := dto.MenuItem{
+				CategoryName: val.CategoryName,
+				MenuDish:     val.MenuDish,
+			}
+			menuItems = append(menuItems, menuItem)
+		}
+	}
+
+	return menuItems
+}
+
+func getMenuItem(bundleMap map[string]map[string]*dto.MenuItem, startDate string, eatType string) *dto.MenuItem {
+	// Если такая категория есть, то вернем ее
+	if menuItemMap, exist := bundleMap[startDate]; exist {
+		if menuItem, ok := menuItemMap[eatType]; ok {
+			return menuItem
+		}
 	}
 	// Если такой категории нет, то создадим и вернем ее
-	menuItem := dto.MenuItem{CategoryName: eatNameType, MenuDish: make([]dto.MenuDish, 0)}
-	menuCategoryMap[eatNameType] = menuItem
-	return menuItem
+	var menuItem = dto.MenuItem{
+		CategoryName: eatType,
+		MenuDish:     make([]*dto.MenuDish, 0),
+	}
+	if menuItemMap, ok := bundleMap[startDate]; !ok {
+		if menuItemMap == nil {
+			menuItemMap = make(map[string]*dto.MenuItem)
+		}
+		menuItemMap[eatType] = &menuItem
+		bundleMap[startDate] = menuItemMap
+	} else {
+		if _, ok := menuItemMap[eatType]; !ok {
+			menuItemMap[eatType] = &menuItem
+		}
+	}
+
+	return &menuItem
+
 }
