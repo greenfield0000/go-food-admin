@@ -95,6 +95,30 @@ create table if not exists k_menu_property
 alter table k_menu_property
     owner to admin;
 
+create table if not exists k_dayofweek
+(
+    id      bigserial not null
+        constraint k_dayofweek_pk
+            primary key,
+    uuid    varchar(40),
+    created timestamp,
+    updated timestamp,
+    userid  bigint,
+    name    varchar(255),
+    sysname varchar(255)
+);
+
+alter table k_dayofweak
+    owner to admin;
+
+INSERT INTO k_dayofweek (id, sysname, name) VALUES (1, 'Monday', 'Понедельник') on conflict (id) do nothing;;
+INSERT INTO k_dayofweek (id, sysname, name) VALUES (2, 'Tuesday', 'Вторник') on conflict (id) do nothing;;
+INSERT INTO k_dayofweek (id, sysname, name) VALUES (3, 'Wednesday', 'Среда') on conflict (id) do nothing;;
+INSERT INTO k_dayofweek (id, sysname, name) VALUES (4, 'Thursday', 'Четверг') on conflict (id) do nothing;;
+INSERT INTO k_dayofweek (id, sysname, name) VALUES (5, 'Friday', 'Пятница') on conflict (id) do nothing;;
+INSERT INTO k_dayofweek (id, sysname, name) VALUES (6, 'Saturday', 'Суббота') on conflict (id) do nothing;;
+INSERT INTO k_dayofweek (id, sysname, name) VALUES (7, 'Sunday', 'Воскресенье') on conflict (id) do nothing;;
+
 create table if not exists k_menu
 (
     id               bigserial not null
@@ -113,7 +137,10 @@ create table if not exists k_menu
     menu_property_id bigint
         constraint k_menu_k_menu_property_id_fk
             references k_menu_property,
-    constraint k_menu_bundle
+    day_of_week_id bigint
+        constraint day_of_week_id_fk
+            references k_dayofweek,
+	constraint k_menu_bundle
         unique (dish_id, eat_type_id, menu_property_id)
 );
 
