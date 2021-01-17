@@ -108,7 +108,7 @@ create table if not exists k_dayofweek
     sysname varchar(255)
 );
 
-alter table k_dayofweak
+alter table k_dayofweek
     owner to admin;
 
 INSERT INTO k_dayofweek (id, sysname, name) VALUES (1, 'Monday', 'Понедельник') on conflict (id) do nothing;;
