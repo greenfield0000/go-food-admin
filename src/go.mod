@@ -5,7 +5,7 @@ go 1.14
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/gofrs/uuid v3.3.0+incompatible
-	github.com/greenfield0000/go-secure-microservice v0.0.0-20201226194529-15f8f058fb5b
+	github.com/greenfield0000/go-secure-microservice v0.0.0-20210117201621-553ebdbcc460
 	github.com/jmoiron/sqlx v1.2.0
 	github.com/lib/pq v1.8.0
 	github.com/tealeg/xlsx/v3 v3.2.3

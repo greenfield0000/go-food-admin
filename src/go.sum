@@ -15,6 +15,8 @@ github.com/google/go-cmp v0.4.0/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/
 github.com/greenfield0000/go-food v0.1.0 h1:i0BIZwsf8BRoI5tUEnwV+p2FDlxiUX+xR/JgCB0XggY=
 github.com/greenfield0000/go-secure-microservice v0.0.0-20201226194529-15f8f058fb5b h1:9KpHjmTJ2H2qkO9lq5Gi8csWfpXrn+LofhNJ+UDkq/4=
 github.com/greenfield0000/go-secure-microservice v0.0.0-20201226194529-15f8f058fb5b/go.mod h1:H76xc2TW+L/+PtXJt5dG1Oi+u8KPHkCy8gCarJRXsZk=
+github.com/greenfield0000/go-secure-microservice v0.0.0-20210117201621-553ebdbcc460 h1:HvUtJTpCoFe4kM9Qm0cmuO7l34cYEmhad94X40PL4FQ=
+github.com/greenfield0000/go-secure-microservice v0.0.0-20210117201621-553ebdbcc460/go.mod h1:H76xc2TW+L/+PtXJt5dG1Oi+u8KPHkCy8gCarJRXsZk=
 github.com/jmoiron/sqlx v1.2.0 h1:41Ip0zITnmWNR/vHV+S4m+VoUivnWY5E4OJfLZjCJMA=
 github.com/jmoiron/sqlx v1.2.0/go.mod h1:1FEQNm3xlJgrMD+FBdI9+xvCksHtbpVBBw5dYhBSsks=
 github.com/kr/pretty v0.1.0 h1:L/CwN0zerZDmRFUapSPitk6f+Q3+0za1rQkzVuMiMFI=

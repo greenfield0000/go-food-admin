@@ -2,14 +2,15 @@ package main
 
 import (
 	"context"
-	"github.com/greenfield0000/go-food/microservices/go-food-admin/database"
-	"github.com/greenfield0000/go-food/microservices/go-food-admin/handlers"
-	menu_integration "github.com/greenfield0000/go-food/microservices/go-food-admin/integration/menu-integration"
-	"github.com/greenfield0000/go-secure-microservice"
 	"log"
 	"net/http"
 	"os"
 	"strconv"
+
+	"github.com/greenfield0000/go-food/microservices/go-food-admin/database"
+	"github.com/greenfield0000/go-food/microservices/go-food-admin/handlers"
+	menu_integration "github.com/greenfield0000/go-food/microservices/go-food-admin/integration/menu-integration"
+	"github.com/greenfield0000/go-secure-microservice"
 )
 
 func init() {
@@ -41,8 +42,8 @@ func main() {
 	http.HandleFunc("/ingridient/update", middleware(handlers.IngridientUpdateHandler))
 	http.HandleFunc("/ingridient/delete", middleware(handlers.IngridientDeleteHandler))
 	// menu
-	http.HandleFunc("/menu/create",  middleware(handlers.MenuCreateHandler))
-	http.HandleFunc("/menu/all", 	middleware(handlers.MenuAllHandler))
+	http.HandleFunc("/menu/create", middleware(handlers.MenuCreateHandler))
+	http.HandleFunc("/menu/all", middleware(handlers.MenuAllHandler))
 	// menu integration
 	http.HandleFunc("/integration/menu", middleware(menu_integration.MenuIntegrationHandler))
 
@@ -74,7 +75,7 @@ func authMiddleWareDetails(r *http.Request) (*secure.AccessDetails, error) {
 
 // getServicePort get port with service listen
 func getServicePort() string {
-	servicePort := ":8081"
+	servicePort := ":8084"
 	if port := os.Getenv("PORT"); port != "" {
 		servicePort = ":" + port
 	}
