@@ -75,7 +75,7 @@ func authMiddleWareDetails(r *http.Request) (*secure.AccessDetails, error) {
 
 // getServicePort get port with service listen
 func getServicePort() string {
-	servicePort := ":8084"
+	servicePort := ":8085"
 	if port := os.Getenv("PORT"); port != "" {
 		servicePort = ":" + port
 	}
