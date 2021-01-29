@@ -14,9 +14,9 @@ import (
 )
 
 func init() {
-	os.Setenv("ACCESS_SECRET", "jdnfksdmfksd") //this should be in an env file
+	os.Setenv("ACCESS_SECRET", "mySecretTempKey") //this should be in an env file
 	//Creating Refresh Token
-	os.Setenv("REFRESH_SECRET", "mcmvmkmsdnfsdmfdsjf") //
+	os.Setenv("REFRESH_SECRET", "mySecretTempKey") //
 	database.StartAutoMigrate()
 }
 
