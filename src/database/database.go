@@ -1,13 +1,15 @@
 package database
 
 import (
+	"log"
+
 	"github.com/greenfield0000/go-food/microservices/go-food-admin/database/migration"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
-	"log"
 )
 
 const (
+	dbHost     = "central-db"
 	dbName     = "central-db"
 	dbUser     = "admin"
 	dbPassword = "admin"
@@ -25,7 +27,7 @@ var DatabaseHolder = databaseHolder{}
 
 // ConnectDB - Открытие бд
 func ConnectDB() (databaseHolder, error) {
-	dataBaseConf := "host=127.0.0.1 user=" + dbUser + " password=" + dbPassword + " dbname=" + dbName + " port=" + dbPort + " sslmode=" + sslMode + " TimeZone=" + dbTimeZone
+	dataBaseConf := "host=" + dbHost + " user=" + dbUser + " password=" + dbPassword + " dbname=" + dbName + " port=" + dbPort + " sslmode=" + sslMode + " TimeZone=" + dbTimeZone
 	connect, err := sqlx.Connect("postgres", dataBaseConf)
 
 	DatabaseHolder.Db = connect
