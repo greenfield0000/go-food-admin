@@ -36,6 +36,7 @@ func main() {
 	http.HandleFunc("/dish/all", middleware(handlers.DishAllHandler))
 	http.HandleFunc("/dish/update", middleware(handlers.DishUpdateHandler))
 	http.HandleFunc("/dish/delete", middleware(handlers.DishDeleteHandler))
+	http.HandleFunc("/dish/loadJournal", middleware(handlers.DishAllHandler))
 	// ingridient
 	http.HandleFunc("/ingridient/create", middleware(handlers.IngridientCreateHandler))
 	http.HandleFunc("/ingridient/all", middleware(handlers.IngridientAllHandler))
@@ -75,7 +76,7 @@ func authMiddleWareDetails(r *http.Request) (*secure.AccessDetails, error) {
 
 // getServicePort get port with service listen
 func getServicePort() string {
-	servicePort := ":8085"
+	servicePort := ":8080"
 	if port := os.Getenv("PORT"); port != "" {
 		servicePort = ":" + port
 	}
